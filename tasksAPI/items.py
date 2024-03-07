@@ -163,33 +163,38 @@ def items(http_method, event):
                                     "statusCode": 200,
                                     "body": json.dumps(f"Task with order {order} updated successfully for user {user_id}")
                                 }
+                        # specific order id does not exist for that user
                         return {
                             "statusCode": 404,
                             "body": json.dumps(f"Task with order {order} not found for user {user_id}")
                         }
+                    # user does not exist
                     else:
                         return {
                             "statusCode": 404,
                             "body": json.dumps(f"No tasks found for user {user_id}")
                         }
+                # incorrect body for the patch request
                 else:
                     return {
                         "statusCode": 400,
                         "body": json.dumps("Invalid request body for PATCH")
                     }
+            # incorrect query params
             else:
                 return {
                     "statusCode": 400,
                     "body": json.dumps("Both user_id and order are required in query parameters for PATCH")
                 }
+        # no query parameters were specified
         else:
             return {
                 "statusCode": 400,
                 "body": json.dumps("No query parameters provided for PATCH")
             }
-
+    # the method is not supported in the items API
     else:
         return {
             "statusCode": 405,
-            "body": json.dumps("Unsupported method")
+            "body": json.dumps("Unsupported method for the Items API")
         }
